@@ -30,7 +30,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 add_library(SimpleProgressBar INTERFACE include/SimpleProgressBar.hpp)
-target_include_directories(SimpleProgressBar INTERFACE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(SimpleProgressBar INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if(BUILD_EXAMPLES)
 
@@ -60,5 +60,3 @@ if(BUILD_TESTING)
     catch_discover_tests(testProgressBar)
 
 endif()
-
-# TODO: Add a header only library
