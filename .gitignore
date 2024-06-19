@@ -1,3 +1,4 @@
 build
 doxyconfig.cfg
 docs/doxygen
+.vscode
