@@ -31,6 +31,8 @@
  * Contact: romyers@umich.edu
  */
 
+#pragma once
+
 #include <iostream>
 
 namespace SimpleProgressBar {
