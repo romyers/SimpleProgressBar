@@ -15,7 +15,7 @@ this library to a CMake project using the `FetchContent` module:
 include(FetchContent)
 FetchContent_Declare(
     SimpleProgressBar
-    GIT_REPOSITORY git@github.com:romyers/SimpleProgressBar.git
+    GIT_REPOSITORY https://github.com/romyers/SimpleProgressBar
     GIT_TAG v1.0 # Or later version
 )
 FetchContent_MakeAvailable(SimpleProgressBar)
