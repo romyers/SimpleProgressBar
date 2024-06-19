@@ -1,6 +1,6 @@
 # Simple Progress Bar
 
-[![CMake on multiple platforms](https://github.com/romyers/SimpleProgressBar/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/romyers/SimpleProgressBar/actions/workflows/cmake-multi-platform.yml)
+[![Cross-Platform](https://github.com/romyers/SimpleProgressBar/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/romyers/SimpleProgressBar/actions/workflows/cmake-multi-platform.yml)
 
 A very, very simple progress bar for C++ console applications.
 
