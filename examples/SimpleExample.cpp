@@ -1,15 +1,16 @@
 
-#include "SimpleProgressBar.hpp"
+#include <SimpleProgressBar.hpp>
 
 #include <thread>
 #include <chrono>
 
 int main() {
 
-    // Create a progress bar with a maximum progress of 100.
-    SimpleProgressBar::ProgressBar bar(100);
+    // Create a progress bar with the default number of steps.
+    // That's 100 steps.
+    SimpleProgressBar::ProgressBar bar;
 
-    for(int i = 0; i < 100; ++i) {
+    for(int i = 0; i < bar.getTotalSteps(); ++i) {
 
         // Simulate some work
         std::this_thread::sleep_for(std::chrono::milliseconds(100));

@@ -57,6 +57,8 @@ behavior of the progress bar. These methods are documented in the
 doxygen-generated documentation. See
 [Generating the Documentation](#generating-the-documentation)
 for information on how to generate the documentation.
+An example illustrating their use can be found in 
+[examples/CustomizationExample.cpp](examples/CustomizationExample.cpp).
 
 ## Example
 
@@ -69,9 +71,9 @@ A short program that demonstrates the use of the progress bar:
 
 int main() {
 
-    SimpleProgressBar::ProgressBar bar(100);
+    SimpleProgressBar::ProgressBar bar;
 
-    for(int i = 0; i < 100; ++i) {
+    for(int i = 0; i < bar.getTotalSteps(); ++i) {
 
         bar.increment();
 

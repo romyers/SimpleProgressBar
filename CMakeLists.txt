@@ -35,11 +35,16 @@ target_include_directories(SimpleProgressBar INTERFACE ${CMAKE_CURRENT_SOURCE_DI
 if(BUILD_EXAMPLES)
 
     add_executable(SimpleExample examples/SimpleExample.cpp)
-    target_include_directories(SimpleExample PRIVATE ${CMAKE_SOURCE_DIR}/include)
+    target_link_libraries(SimpleExample PRIVATE SimpleProgressBar)
+
+    add_executable(CustomizationExample examples/CustomizationExample.cpp)
+    target_link_libraries(CustomizationExample PRIVATE SimpleProgressBar)
 
 endif()
 
 if(BUILD_TESTING)
+
+    # TODO: Find Catch2 if it exists, and only FetchContent if it doesn't
 
     include(FetchContent)
     include(CTest)

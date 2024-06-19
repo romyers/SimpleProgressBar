@@ -72,9 +72,9 @@ A short program that demonstrates the use of the progress bar:
 
 int main() {
 
-    SimpleProgressBar::ProgressBar bar(100);
+    SimpleProgressBar::ProgressBar bar();
 
-    for(int i = 0; i < 100; ++i) {
+    for(int i = 0; i < getTotalSteps; ++i) {
 
         bar.increment();
 

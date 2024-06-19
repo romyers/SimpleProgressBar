@@ -62,6 +62,13 @@ namespace SimpleProgressBar {
         void increment(unsigned int steps = 1U);
 
         /**
+         * Retrieve the total number of steps in the progress bar.
+         * 
+         * @return The total number of steps
+         */
+        unsigned int getTotalSteps() const;
+
+        /**
          * Prints the progress bar in its current state to a stream.
          * Prints to std::cout by default.
          * 
@@ -97,12 +104,18 @@ namespace SimpleProgressBar {
         void setRightEndcapSymbol(char c);
 
         /**
-         * Sets the symbol for the interior of the progress bar.
+         * Sets the symbol indicating completed progress.
          * Set to '=' by default.
          * 
          * @param c The new symbol.
          */
-        void setFillSymbol(char c);
+        void setDoneSymbol(char c);
+
+        /**
+         * Sets the symbol indicating progress that hasn't been completed yet.
+         * Set to ' ' by default.
+         */
+        void setTodoSymbol(char c);
 
         /**
          * Sets the progress bar to overwrite the current output line on each
@@ -125,7 +138,8 @@ namespace SimpleProgressBar {
 
         char leftEndcapSymbol;
         char rightEndcapSymbol;
-        char barSymbol;
+        char doneSymbol;
+        char todoSymbol;
 
         unsigned int width;
 
@@ -143,10 +157,17 @@ SimpleProgressBar::ProgressBar::ProgressBar(unsigned int totalSteps) :
     progress(0),
     leftEndcapSymbol('['),
     rightEndcapSymbol(']'),
-    barSymbol('='),
+    doneSymbol('='),
+    todoSymbol(' '),
     width(80U),
     overwrite(true),
     totalSteps(totalSteps) {}
+
+unsigned int SimpleProgressBar::ProgressBar::getTotalSteps() const {
+
+    return totalSteps;
+
+}
 
 void SimpleProgressBar::ProgressBar::setLeftEndcapSymbol(char c) {
 
@@ -160,9 +181,15 @@ void SimpleProgressBar::ProgressBar::setRightEndcapSymbol(char c) {
 
 }
 
-void SimpleProgressBar::ProgressBar::setFillSymbol(char c) {
+void SimpleProgressBar::ProgressBar::setDoneSymbol(char c) {
 
-    barSymbol = c;
+    doneSymbol = c;
+
+}
+
+void SimpleProgressBar::ProgressBar::setTodoSymbol(char c) {
+
+    todoSymbol = c;
 
 }
 
@@ -198,13 +225,13 @@ void SimpleProgressBar::ProgressBar::print(std::ostream &out) const {
 
     for(unsigned int w = 0; w < numBarChars; ++w) {
 
-        out << barSymbol;
+        out << doneSymbol;
     
     }
 
     for(unsigned int w = numBarChars; w < width - 2; ++w) {
 
-        out << " ";
+        out << todoSymbol;
 
     }
 
