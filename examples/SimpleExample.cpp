@@ -1,7 +1,6 @@
 
 #include "SimpleProgressBar.hpp"
 
-#include <iostream>
 #include <thread>
 #include <chrono>
 
@@ -20,7 +19,7 @@ int main() {
         bar.increment();
 
         // Print the progress bar in its current state to the console.
-        bar.print(std::cout);
+        bar.print();
 
     }
 

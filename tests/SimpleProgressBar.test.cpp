@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include <catch2/catch_test_macros.hpp>
 
 #include "SimpleProgressBar.hpp"
 
@@ -12,46 +12,50 @@ const char DEFAULT_L_ENDCAP = '[';
 const char DEFAULT_R_ENDCAP = ']';
 const char DEFAULT_FILL_SYMBOL = '=';
 
-TEST(widthIsCorrect, defaultWidth) {
+TEST_CASE("Default width is correctly displayed", "[width]") {
 
     ProgressBar bar;
 
     stringstream ss;
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
 
-    EXPECT_EQ(ss.str().size(), 80);
+    bar.print(ss);
+
+    REQUIRE(ss.str().size() == 80);
 
 }
 
-TEST(widthIsCorrect, newWidth) {
+TEST_CASE("Widths are correctly set", "[width]") {
 
     ProgressBar bar;
 
     stringstream ss;
 
     bar.setWidth(50U);
+    bar.disableOverwrite();
 
-    bar.print(ss, false);
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str().size(), 50);
+    REQUIRE(ss.str().size() == 50);
 
 }
 
-TEST(endcaps, defaultSymbol) {
+TEST_CASE("Default encaps are correctly displayed", "[endcaps]") {
 
     ProgressBar bar;
 
     stringstream ss;
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str().front(), DEFAULT_L_ENDCAP);
-    EXPECT_EQ(ss.str().back(), DEFAULT_R_ENDCAP);
+    REQUIRE(ss.str().front() == DEFAULT_L_ENDCAP);
+    REQUIRE(ss.str().back() == DEFAULT_R_ENDCAP);
 
 }
 
-TEST(endcaps, setNewSymbols) {
+TEST_CASE("Endcaps are correctly set", "[endcaps]") {
 
     ProgressBar bar;
 
@@ -60,14 +64,16 @@ TEST(endcaps, setNewSymbols) {
     bar.setLeftEndcapSymbol('a');
     bar.setRightEndcapSymbol('b');
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
 
-    EXPECT_EQ(ss.str().front(), 'a');
-    EXPECT_EQ(ss.str().back(), 'b');
+    bar.print(ss);
+
+    REQUIRE(ss.str().front() == 'a');
+    REQUIRE(ss.str().back() == 'b');
 
 }
 
-TEST(barSymbol, defaultSymbol) {
+TEST_CASE("Default fill symbol is correctly displayed", "[fillSymbol]") {
 
     ProgressBar bar;
 
@@ -75,13 +81,15 @@ TEST(barSymbol, defaultSymbol) {
 
     bar.increment(100U);
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
 
-    EXPECT_EQ(ss.str()[1], DEFAULT_FILL_SYMBOL);
+    bar.print(ss);
+
+    REQUIRE(ss.str()[1] == DEFAULT_FILL_SYMBOL);
 
 }
 
-TEST(barSymbol, newSymbol) {
+TEST_CASE("Fill symbol is correctly set", "[fillSymbol]") {
 
     ProgressBar bar;
 
@@ -91,13 +99,15 @@ TEST(barSymbol, newSymbol) {
 
     bar.setFillSymbol('n');
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
 
-    EXPECT_EQ(ss.str()[1], 'n');
+    bar.print(ss);
+
+    REQUIRE(ss.str()[1] == 'n');
 
 }
 
-TEST(barDisplay, emptyByDefault) {
+TEST_CASE("Bar is empty by default", "barDisplay") {
 
     ProgressBar bar;
 
@@ -111,13 +121,14 @@ TEST(barDisplay, emptyByDefault) {
     bar.setRightEndcapSymbol(']');
     bar.setFillSymbol('=');
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str(), "[        ]");
+    REQUIRE(ss.str() == "[        ]");
 
 }
 
-TEST(barDisplay, fullBar) {
+TEST_CASE("Full bar is correctly displayed", "barDisplay") {
 
     ProgressBar bar;
 
@@ -133,13 +144,14 @@ TEST(barDisplay, fullBar) {
 
     bar.increment(100U);
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str(), "[========]");
+    REQUIRE(ss.str() == "[========]");
 
 }
 
-TEST(barDisplay, halfBar) {
+TEST_CASE("Half-filled bar is correctly displayed", "barDisplay") {
 
     ProgressBar bar;
 
@@ -155,13 +167,14 @@ TEST(barDisplay, halfBar) {
 
     bar.increment(50U);
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str(), "[====    ]");
+    REQUIRE(ss.str() == "[====    ]");
 
 }
 
-TEST(barDisplay, almostFullBarIsNotFull) {
+TEST_CASE("Almost full bar is not full", "[barDisplay]") {
 
     ProgressBar bar;
 
@@ -177,13 +190,14 @@ TEST(barDisplay, almostFullBarIsNotFull) {
 
     bar.increment(99U);
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str(), "[======= ]");
+    REQUIRE(ss.str() == "[======= ]");
 
 }
 
-TEST(barDisplay, almostEmptyBarIsEmpty) {
+TEST_CASE("Almost empty bar is empty", "[barDisplay]") {
 
     ProgressBar bar;
 
@@ -199,13 +213,14 @@ TEST(barDisplay, almostEmptyBarIsEmpty) {
 
     bar.increment(1U);
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str(), "[        ]");
+    REQUIRE(ss.str() == "[        ]");
 
 }
 
-TEST(barDisplay, norm) {
+TEST_CASE("Bar is correctly filled", "[barDisplay]") {
 
     ProgressBar bar;
 
@@ -221,8 +236,49 @@ TEST(barDisplay, norm) {
 
     bar.increment(39U);
 
-    bar.print(ss, false);
+    bar.disableOverwrite();
+    bar.print(ss);
 
-    EXPECT_EQ(ss.str(), "[===     ]");
+    REQUIRE(ss.str() == "[===     ]");
+
+}
+
+TEST_CASE("Enabling overwrite adds carriage return", "[overwrite]") {
+
+    ProgressBar bar;
+
+    stringstream ss;
+
+    bar.disableOverwrite();
+    bar.enableOverwrite();
+    bar.print(ss);
+
+    REQUIRE(ss.str().back() == '\r');
+
+}
+
+TEST_CASE("Disabling overwrite removes carriage return", "[overwrite]") {
+
+    ProgressBar bar;
+
+    stringstream ss;
+
+    bar.enableOverwrite();
+    bar.disableOverwrite();
+    bar.print(ss);
+
+    REQUIRE(ss.str().back() != '\r');
+
+}
+
+TEST_CASE("Overwrite is enabled by default", "[overwrite]") {
+
+    ProgressBar bar;
+
+    stringstream ss;
+
+    bar.print(ss);
+
+    REQUIRE(ss.str().back() == '\r');
 
 }

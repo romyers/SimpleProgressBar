@@ -31,7 +31,7 @@
  * Contact: romyers@umich.edu
  */
 
-#include <ostream>
+#include <iostream>
 
 namespace SimpleProgressBar {
 
@@ -45,11 +45,40 @@ namespace SimpleProgressBar {
         /**
          * Constructor.
          * 
-         * @param maxProgress The maximum value to which the ProgressBar
-         * can be incremented. When incremented to maxProgress, the 
-         * progress bar will be displayed as completely full.
+         * @param totalSteps The total number of progress bar steps.
          */
-        ProgressBar(unsigned int maxProgress = 100U);
+        ProgressBar(unsigned int totalSteps = 100U);
+
+        /**
+         * Increments the progress displayed by the progress bar by a given
+         * number of steps (one by default).
+         * 
+         * If increment() brings the current progress above totalSteps,
+         * the current progress will be snapped to totalSteps.
+         * 
+         * @param steps The number of steps by which to increment the displayed
+         * progress.
+         */
+        void increment(unsigned int steps = 1U);
+
+        /**
+         * Prints the progress bar in its current state to a stream.
+         * Prints to std::cout by default.
+         * 
+         * @param out The stream to print to.
+         */
+        void print(std::ostream &out = std::cout) const;
+
+        /**
+         * Sets the width of the progress bar display in number of characters.
+         * The width of the progress bar is set to 80 characters by default.
+         * 
+         * REQUIRES: w is at least 2.
+         * 
+         * @param w The desired width of the progress bar, as a number of 
+         * characters.
+         */
+        void setWidth(unsigned int w);
 
         /**
          * Sets the symbol for the progress bar's left endcap.
@@ -76,51 +105,31 @@ namespace SimpleProgressBar {
         void setFillSymbol(char c);
 
         /**
-         * Sets the width of the progress bar display in number of characters.
-         * The width of the progress bar is set to 80 characters by default.
-         * 
-         * REQUIRES: w is at least 2.
-         * 
-         * @param w The desired width of the progress bar, as a number of 
-         * characters.
+         * Sets the progress bar to overwrite the current output line on each
+         * call to print(). This is equivalent to adding the '\r' character to
+         * the end of the printed output.
          */
-        void setWidth(unsigned int w);
+        void enableOverwrite();
 
         /**
-         * Increments the progress displayed by the progress bar by amount.
-         * The displayed progress will increase by amount / maxProgress,
-         * where maxProgress is the maximum progress value set in the
-         * constructor.
-         * 
-         * If increment() brings the current progress above maxProgress,
-         * the current progress will be snapped to maxProgress.
-         * 
-         * @param amount The amount by which to increment the displayed
-         * progress.
+         * Sets the progress bar not to overwrite the current output line on
+         * each call to print(). Successive calls to print will be printed
+         * one after another.
          */
-        void increment(unsigned int amount = 1U);
-
-        /**
-         * Prints the progress bar to a stream.
-         * 
-         * @param out The stream to print to.
-         * @param overwrite Whether to overwrite the current line in the
-         * stream. If set to true, print() will behave as though it was
-         * followed by insertion of a '\r' character. Set to true by
-         * default.
-         */
-        void print(std::ostream &out, bool overwrite = true) const;
+        void disableOverwrite();
 
     private:
 
         unsigned int progress;
-        unsigned int maxProgress;
+        unsigned int totalSteps;
 
         char leftEndcapSymbol;
         char rightEndcapSymbol;
         char barSymbol;
 
         unsigned int width;
+
+        bool overwrite;
 
     };
 
@@ -130,13 +139,14 @@ namespace SimpleProgressBar {
 /////////////////////////////// IMPLEMENTATION ////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-SimpleProgressBar::ProgressBar::ProgressBar(unsigned int maxProgress) : 
+SimpleProgressBar::ProgressBar::ProgressBar(unsigned int totalSteps) : 
     progress(0),
     leftEndcapSymbol('['),
     rightEndcapSymbol(']'),
     barSymbol('='),
     width(80U),
-    maxProgress(maxProgress) {}
+    overwrite(true),
+    totalSteps(totalSteps) {}
 
 void SimpleProgressBar::ProgressBar::setLeftEndcapSymbol(char c) {
 
@@ -162,26 +172,24 @@ void SimpleProgressBar::ProgressBar::setWidth(unsigned int w) {
 
 }
 
-void SimpleProgressBar::ProgressBar::increment(unsigned int amount) {
+void SimpleProgressBar::ProgressBar::increment(unsigned int steps) {
 
-    progress += amount;
+    progress += steps;
 
-    if(progress > maxProgress) {
+    if(progress > totalSteps) {
 
-        progress = maxProgress;
+        progress = totalSteps;
 
     }
 
 }
 
-void SimpleProgressBar::ProgressBar::print(
-    std::ostream &out, bool overwrite
-) const {
+void SimpleProgressBar::ProgressBar::print(std::ostream &out) const {
 
     out << leftEndcapSymbol;
 
     double proportionalProgress = static_cast<double>(progress) 
-                                / static_cast<double>(maxProgress);
+                                / static_cast<double>(totalSteps);
 
     // For nonnegative values, casting to int is equivalent to flooring.
     unsigned int numBarChars = static_cast<unsigned int>(
@@ -203,5 +211,17 @@ void SimpleProgressBar::ProgressBar::print(
     out << rightEndcapSymbol;
     out << std::flush;
     if(overwrite) out << '\r';
+
+}
+
+void SimpleProgressBar::ProgressBar::enableOverwrite() {
+
+    overwrite = true;
+
+}
+
+void SimpleProgressBar::ProgressBar::disableOverwrite() {
+
+    overwrite = false;
 
 }
