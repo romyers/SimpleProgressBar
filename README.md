@@ -16,7 +16,7 @@ include(FetchContent)
 FetchContent_Declare(
     SimpleProgressBar
     GIT_REPOSITORY git@github.com:romyers/SimpleProgressBar.git
-    GIT_TAG 1.0 # Or later version
+    GIT_TAG v1.0 # Or later version
 )
 FetchContent_MakeAvailable(SimpleProgressBar)
 ```
